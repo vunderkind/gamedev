@@ -2,8 +2,9 @@ import * as PIXI from 'pixi.js';
 import Victor from 'victor';
 import Player from './player';
 import Zombie from './zombie';
+import Spawner from './spawner';
 
-let canvasSize = 256;
+let canvasSize = 512;
 const canvas = document.getElementById("myCanvas");
 const app = new PIXI.Application({
     view: canvas,
@@ -13,10 +14,10 @@ const app = new PIXI.Application({
 });
 
 const player = new Player({ app });
-const zombie = new Zombie({ app, player });
+let zombieSpawn = new Spawner({ create: () => new Zombie({ app, player }) });
 
 app.ticker.add(() => {
     player.update();
-    zombie.update();
+    zombieSpawn.spawns.forEach(zombie => zombie.update())
 
 });
